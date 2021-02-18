@@ -49,7 +49,7 @@ exports.getOneSauce = (req, res, next) => {//// Exportation de la route get, cib
     });
 };
 
-exports.likeSauce = (req, res, next) => {
+exports.likeSauce = (req, res, next) => {///// Exportation da la route like/dislike 
     Sauce.findOne({ _id: req.params.id })
         .then(sauce => {
             switch (req.body.like){
@@ -57,7 +57,7 @@ exports.likeSauce = (req, res, next) => {
                     sauce.dislikes = sauce.dislikes++;
                     sauce.usersDisliked.push(req.body.userId);
                     sauceObject = {
-                        "dislikes": sauce.dislikes++,
+                        "dislikes": sauce.usersDisliked.length,
                         "usersDisliked": sauce.usersDisliked
                     }
                     break;
@@ -66,14 +66,14 @@ exports.likeSauce = (req, res, next) => {
                         sauce.usersDisliked = sauce.usersDisliked.filter(user => user !== req.body.userId);
                         sauce.dislikes = sauce.dislikes--;
                         sauceObject = {
-                            "dislikes": sauce.dislikes--,
+                            "dislikes": sauce.usersDisliked.length,
                             "usersDisliked": sauce.usersDisliked
                         }
                     } else {
                         sauce.usersLiked = sauce.usersLiked.filter(user => user !== req.body.userId);
                         sauce.likes = sauce.likes--;
                         sauceObject = {
-                            "likes": sauce.likes--,
+                            "likes": sauce.usersLiked.length,
                             "usersLiked": sauce.usersLiked
 
                         }
@@ -83,7 +83,7 @@ exports.likeSauce = (req, res, next) => {
                     sauce.likes = sauce.likes++;
                     sauce.usersLiked.push(req.body.userId);
                     sauceObject = {
-                        "likes": sauce.likes++,
+                        "likes": sauce.usersLiked.length,
                         "usersLiked": sauce.usersLiked
                     }
                     break;
