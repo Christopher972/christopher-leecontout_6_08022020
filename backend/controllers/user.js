@@ -2,7 +2,15 @@ const bcrypt = require('bcrypt');//// Imporation du package bcrypt
 const User = require('../models/User');///// Importation du modèle schéma User
 const jwt = require('jsonwebtoken');//// Importation du package jsonwebtoken 
 
+require('dotenv').config();/// Importation fichier de configuation 
+
+//// Création de nouveaux utilisateurs /////
+
+let regexEmail =  /^([a-z\d\.-]+)@([a-z\d-]+)\.([a-z{2,8})(\.[a-z]{2,8})?$/;
+let regexPassword =  /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}/; // Sécurisation: 8 caractères, une maj, une min , un chiffre
+
 exports.signup = (req, res, next) => {
+  if((req.body.email).match(regexEmail)){
     bcrypt.hash(req.body.password, 10)
     .then(hash => {
         const user = new User({
@@ -14,6 +22,7 @@ exports.signup = (req, res, next) => {
         .catch(error => res.status(400).json({ error }));
     })
     .catch(error => res.status(500).json({ error }));
+  }
 };
 
 exports.login = (req, res, next) => {
@@ -29,7 +38,7 @@ exports.login = (req, res, next) => {
             }
             res.status(200).json({
               userId: user._id,
-              token:jwt.sign({ userId: user._id },'RANDOM_TOKEN_SECRET',{ expiresIn: '24h'})
+              token:jwt.sign({ userId: user._id }, process.env.TOKEN_SECRET_KEY, { expiresIn: '24h'})
             });
         })
         .catch(error => res.status(500).json({ error }));
