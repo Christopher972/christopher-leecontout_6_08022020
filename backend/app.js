@@ -36,6 +36,6 @@ app.use(helmet()); /// Sécurisation des en-têtes HTTP
 app.use('/images', express.static(path.join(__dirname, 'images')));///  Gestionnaire de routage 
 
 app.use('/api/sauces', sauceRoutes);/// enregistrement du routeur pour toutes le demandes effectuées vers /api/sauces
-app.use('/api/auth', userRoutes );/// enregistrement du routeur pour toutes les demandes efectuées vers /api/auth 
+app.use('/api/auth', userRoutes );/// enregistrement du routeur pour toutes les demandes efectuées vers /api/users 
 
 module.exports = app;

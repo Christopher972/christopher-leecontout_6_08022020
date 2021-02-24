@@ -20,7 +20,7 @@ exports.modifySauce = (req, res, next) => {//// Exportation de la route put
       ...JSON.parse(req.body.sauce),
       imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`//// Traitement de la nouvelle image 
     } : { ...req.body }; //// traitement uniquement de l'objet
-    Sauce.updateOne({ _id: req.params.id }, { ...sauceObject, _id: req.params.id })
+    Sauce.updateOne({ _id: req.params.id }, { ...sauceObject, _id: req.params.id })//// mise à jour de l'objet dans la base de données
       .then(() => res.status(200).json({ message: 'Sauce modifiée !'}))
       .catch(error => res.status(400).json({ error }));
 };
@@ -52,7 +52,7 @@ exports.getOneSauce = (req, res, next) => {//// Exportation de la route get, cib
 exports.likeSauce = (req, res, next) => {///// Exportation da la route like/dislike 
     Sauce.findOne({ _id: req.params.id })
         .then(sauce => {
-            switch (req.body.like){
+            switch(req.body.like){
                 case -1:
                     sauce.dislikes = sauce.dislikes++;
                     sauce.usersDisliked.push(req.body.userId);
@@ -62,21 +62,21 @@ exports.likeSauce = (req, res, next) => {///// Exportation da la route like/disl
                     }
                     break;
                 case 0:
-                    if (sauce.usersDisliked.find(user => user === req.body.userId)) {
+                    if(sauce.usersDisliked.find(user => user === req.body.userId)) {
                         sauce.usersDisliked = sauce.usersDisliked.filter(user => user !== req.body.userId);
                         sauce.dislikes = sauce.dislikes--;
                         sauceObject = {
                             "dislikes": sauce.usersDisliked.length,
                             "usersDisliked": sauce.usersDisliked
                         }
-                    } else {
+                    }else{
                         sauce.usersLiked = sauce.usersLiked.filter(user => user !== req.body.userId);
                         sauce.likes = sauce.likes--;
                         sauceObject = {
                             "likes": sauce.usersLiked.length,
                             "usersLiked": sauce.usersLiked
 
-                        }
+                        }  
                     }
                     break;
                 case +1:
@@ -98,7 +98,7 @@ exports.likeSauce = (req, res, next) => {///// Exportation da la route like/disl
     .catch(() => res.status(400).json({ error: 'Sauce non trouvée !' }));
 }
 
-exports.getAllSauce = (req, res, next) => { //// Exportation de la route get globale 
+exports.getAllSauces = (req, res, next) => { //// Exportation de la route get globale 
     Sauce.find().then((sauces) => {
       res.status(200).json(sauces);
     })

@@ -10,7 +10,7 @@ let regexEmail =  /^([a-z\d\.-]+)@([a-z\d-]+)\.([a-z{2,8})(\.[a-z]{2,8})?$/;
 let regexPassword =  /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}/; // Sécurisation: 8 caractères, une maj, une min , un chiffre
 
 exports.signup = (req, res, next) => {
-  if((req.body.email).match(regexEmail)){
+  if(((req.body.email).match(regexEmail))&&(req.body.password).match(regexPassword)){
     bcrypt.hash(req.body.password, 10)
     .then(hash => {
         const user = new User({
