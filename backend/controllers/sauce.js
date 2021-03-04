@@ -2,7 +2,7 @@ const Sauce = require('../models/Sauce');///// Importation du modèle schéma Sa
 const fs = require('fs');///// Importation du package file-system
 
 
-exports.createSauce = (req, res, next) => {////// Exportation de la route post 
+exports.createSauce = (req, res, next) =>{////// Exportation de la route post 
     const sauceObject = JSON.parse(req.body.sauce); //// Récupération des informations de l'objet Sauce
     delete sauceObject._id;
     const sauce = new Sauce({
@@ -14,7 +14,7 @@ exports.createSauce = (req, res, next) => {////// Exportation de la route post
       .catch(error => res.status(400).json({ error }));
 };
 
-exports.modifySauce = (req, res, next) => {//// Exportation de la route put 
+exports.modifySauce = (req, res, next) =>{//// Exportation de la route put 
     const sauceObject = req.file ?//// création de l'objet sauce et utilisation d'un opérateur ternaire
     {
       ...JSON.parse(req.body.sauce),
@@ -25,7 +25,7 @@ exports.modifySauce = (req, res, next) => {//// Exportation de la route put
       .catch(error => res.status(400).json({ error }));
 };
 
-exports.deleteSauce = (req, res, next) => { ///// Exportation de la route delete
+exports.deleteSauce = (req, res, next) =>{ ///// Exportation de la route delete
     Sauce.findOne({ _id: req.params.id }) /// Trouver l'objet dans la base de donnée
         .then(sauce => {
             const filename = sauce.imageUrl.split('/images/')[1]; //// Extraction du nom du fichier à supprimer
@@ -38,7 +38,7 @@ exports.deleteSauce = (req, res, next) => { ///// Exportation de la route delete
     .catch(error => res.status(500).json({ error }));
 };
 
-exports.getOneSauce = (req, res, next) => {//// Exportation de la route get, ciblage de paramètre de requête
+exports.getOneSauce = (req, res, next) =>{//// Exportation de la route get, ciblage de paramètre de requête
     Sauce.findOne({_id: req.params.id}).then((sauce) => {
         res.status(200).json(sauce);
     })
@@ -49,7 +49,7 @@ exports.getOneSauce = (req, res, next) => {//// Exportation de la route get, cib
     });
 };
 
-exports.likeSauce = (req, res, next) => {///// Exportation da la route like/dislike 
+exports.likeSauce = (req, res, next) =>{///// Exportation da la route like/dislike 
     Sauce.findOne({ _id: req.params.id })
         .then(sauce => {
             switch(req.body.like){
@@ -90,7 +90,6 @@ exports.likeSauce = (req, res, next) => {///// Exportation da la route like/disl
                 default:
                     return res.status(500).json({ error });
             }
-            console.log(sauceObject);
             Sauce.updateOne({ _id: req.params.id }, { ...sauceObject, _id: req.params.id })
                 .then(() => res.status(200).json({ message: 'Sauce aimée !' }))
                 .catch(error => res.status(400).json({ error }));
@@ -98,7 +97,7 @@ exports.likeSauce = (req, res, next) => {///// Exportation da la route like/disl
     .catch(() => res.status(400).json({ error: 'Sauce non trouvée !' }));
 }
 
-exports.getAllSauces = (req, res, next) => { //// Exportation de la route get globale 
+exports.getAllSauces = (req, res, next) =>{ //// Exportation de la route get globale 
     Sauce.find().then((sauces) => {
       res.status(200).json(sauces);
     })
