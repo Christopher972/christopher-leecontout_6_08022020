@@ -7,9 +7,9 @@ require('dotenv').config();/// Importation fichier de configuation
 //// Création de nouveaux utilisateurs /////
 
 let regexEmail =  /^([a-z\d\.-]+)@([a-z\d-]+)\.([a-z{2,8})(\.[a-z]{2,8})?$/;
-let regexPassword =  /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}/; // Sécurisation: 8 caractères, une maj, une min , un chiffre
+let regexPassword =  /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8}/; // Sécurisation: 8 caractères, une maj, une min , un chiffre
 
-exports.signup = (req, res, next) => {
+exports.signup = (req, res, next) =>{ // Inscription Utilisateur 
   if(((req.body.email).match(regexEmail))&&(req.body.password).match(regexPassword)){
     bcrypt.hash(req.body.password, 10)
     .then(hash => {
@@ -22,10 +22,12 @@ exports.signup = (req, res, next) => {
         .catch(error => res.status(400).json({ error }));
     })
     .catch(error => res.status(500).json({ error }));
+  }else{
+      return res.status(401).json({ error: 'Votre mot de passe doit contenir 8 caractères, au moins une majuscule, une minuscule et un nombre'});
   }
 };
 
-exports.login = (req, res, next) => {
+exports.login = (req, res, next) =>{///// Connexion utilisateur 
     User.findOne({ email: req.body.email })
       .then(user => {
         if (!user) {

@@ -11,9 +11,9 @@ const userRoutes = require('./routes/user'); ///// Importation du Router user
 
 require('dotenv').config();//// Importation fichier de configuation 
 
-/// Pour connecter l'API à la base de données////
+/// Pour connecter l'API à la base de données///
 
-mongoose.connect(process.env.DB_URI,
+mongoose.connect(process.env.DB_URI_DEV,
   { useCreateIndex: true,
     useNewUrlParser: true,
     useUnifiedTopology: true })
