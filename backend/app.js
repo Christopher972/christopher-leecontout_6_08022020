@@ -1,5 +1,4 @@
 const express = require('express'); /// Importation du framework express
-const bodyParser = require('body-parser');/// Importation du package body-parser
 const mongoose = require('mongoose'); //// Importation du package Mongoose
 const mongoSanitize = require('express-mongo-sanitize'); /// Importation du package sanitize
 const helmet = require('helmet');// Importation du package Helmet 
@@ -29,9 +28,9 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use(bodyParser.json()); /// Transformation du corps de la requête en objet json 
+app.use(express.json()); /// Transformation du corps de la requête en objet json 
 
-app.use(mongoSanitize()); /// Protection contre les attaques d'injections NoSQL
+app.use(mongoSanitize()); /// Protection des données dans la BD
 app.use(helmet()); /// Sécurisation des en-têtes HTTP
 app.use('/images', express.static(path.join(__dirname, 'images')));///  Gestionnaire de routage 
 
